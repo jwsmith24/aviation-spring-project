@@ -1,0 +1,17 @@
+services:
+  aviation-db:
+    image: postgres
+    container_name: aviation_db
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: aviation_db
+
+    ports:
+      - "5429:5432"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

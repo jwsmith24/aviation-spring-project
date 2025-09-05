@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: aviation-app-spring
+
+  datasource:
+    url: jdbc:postgresql://localhost:5429/aviation_db
+    username: user
+    password: root
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+
