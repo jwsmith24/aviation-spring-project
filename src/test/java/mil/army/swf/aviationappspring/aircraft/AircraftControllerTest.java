@@ -129,6 +129,15 @@ class AircraftControllerTest {
         Mockito.verify(aircraftService).deleteAircraft(3L);
     }
 
+    @Test
+    void shouldReturnCorrectErrorMessageWhenNotFound() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/aircraft/99"))
+                .andExpect(status().isNotFound());
+
+        Mockito.verify(aircraftService).getAircraftById(any(Long.class));
+
+    }
+
 
 
 

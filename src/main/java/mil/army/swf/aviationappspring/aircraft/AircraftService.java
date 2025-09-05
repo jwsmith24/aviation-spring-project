@@ -3,6 +3,7 @@ package mil.army.swf.aviationappspring.aircraft;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AircraftService {
@@ -22,7 +23,10 @@ public class AircraftService {
     }
 
     public Aircraft getAircraftById(Long id) {
-        return repository.findById(id).orElseThrow();
+
+        Optional<Aircraft> target = repository.findById(id);
+        return target.orElse(null);
+
     }
 
     public Aircraft updateAircraft(Long id, Aircraft updatedAircraft) {

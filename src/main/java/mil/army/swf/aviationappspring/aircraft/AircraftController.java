@@ -31,7 +31,13 @@ public class AircraftController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Aircraft> getAircraftById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getAircraftById(id));
+
+        Aircraft targetAircraft = service.getAircraftById(id);
+        if (targetAircraft == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(targetAircraft);
     }
 
     @PutMapping("/{id}")
