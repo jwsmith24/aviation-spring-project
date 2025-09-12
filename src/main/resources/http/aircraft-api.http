@@ -1,2 +1,42 @@
 
-GET http://localhost:8080/api/aircraft/5
+POST http://localhost:8080/api/pilot
+Content-Type: application/json
+
+{
+  "firstName": "Doug",
+  "lastName": "TEST",
+  "age": 40
+}
+
+###
+
+POST http://localhost:8080/api/aircraft
+Content-Type: application/json
+
+{
+  "airframe": "tyler's special aircraft",
+  "pilot": {
+    "id": 1
+  }
+}
+
+
+###
+POST http://localhost:8080/api/aircraft
+Content-Type: application/json
+
+{
+  "airframe": "Curt's special aircraft",
+  "pilot": {
+    "firstName": "Curt",
+    "lastName": "Arbtin",
+    "age": 30
+  }
+}
+
+###
+GET localhost:8080/api/aircraft
+
+###
+
+GET http://localhost:8080/api/aircraft?pilotId=1

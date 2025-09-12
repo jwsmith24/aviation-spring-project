@@ -24,9 +24,12 @@ public class AircraftService {
 
     public Aircraft getAircraftById(Long id) {
 
-        Optional<Aircraft> target = repository.findById(id);
-        return target.orElse(null);
+       return repository.findById(id).orElseThrow();
 
+    }
+
+    public List<Aircraft> getAircraftByPilotId(Long pilotId) {
+        return repository.findAllByPilot_Id(pilotId);
     }
 
     public Aircraft updateAircraft(Long id, Aircraft updatedAircraft) {

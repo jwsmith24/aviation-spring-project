@@ -40,6 +40,11 @@ public class AircraftController {
         return ResponseEntity.ok(targetAircraft);
     }
 
+    @GetMapping(params = "pilotId")
+    public ResponseEntity<List<Aircraft>> getAircraftByPilotId(@RequestParam("pilotId") Long pilotId) {
+        return ResponseEntity.ok(service.getAircraftByPilotId(pilotId));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Aircraft> updateAircraft(@PathVariable Long id,
                                                    @RequestBody Aircraft updated) {

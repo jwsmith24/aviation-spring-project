@@ -1,6 +1,7 @@
 package mil.army.swf.aviationappspring.aircraft;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import mil.army.swf.aviationappspring.pilot.Pilot;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,11 +41,11 @@ class AircraftControllerTest {
 
     @BeforeAll
     static void setup() {
-        mockAircraft = new Aircraft(3L, "F-16", "Pete");
-        mockedAircraftList.add(new Aircraft(1L, "F-22", "Doug"));
-        mockedAircraftList.add(new Aircraft(2L, "F-35", "Steve"));
+        mockAircraft = new Aircraft(3L, "F-16", new Pilot(1L, "Pete", "Last", 29));
+        mockedAircraftList.add(new Aircraft(1L, "F-22", new Pilot(2L, "Doug", "Last", 45)));
+        mockedAircraftList.add(new Aircraft(2L, "F-35", new Pilot(3L, "Steve", "lastname", 30)));
         updatedMockAircraft = new Aircraft(mockAircraft.getId(), mockAircraft.getAirframe(),
-                "UPDATED pete");
+                new Pilot(1L, "UPDATEDPete", "Last", 29));
     }
 
     @BeforeEach
@@ -65,9 +66,6 @@ class AircraftControllerTest {
 
     @Test
     void shouldCreateAircraft() throws Exception {
-        // stub the controller response
-        // when createAircraft is called on the service with any Aircraft object, return the
-        // object passed
 
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/aircraft")
@@ -75,7 +73,7 @@ class AircraftControllerTest {
                 .content(objectMapper.writeValueAsString(mockAircraft))
         ).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.airframe").value("F-16"))
-                .andExpect(jsonPath("$.pilot").value("Pete"));
+                .andExpect(jsonPath("$.pilot.firstName").value("Pete"));
 
         Mockito.verify(aircraftService).createAircraft(any(Aircraft.class));
 
@@ -89,7 +87,7 @@ class AircraftControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.airframe").value("F-22"))
-                .andExpect(jsonPath("$.pilot").value("Doug"));
+                .andExpect(jsonPath("$.pilot.firstName").value("Doug"));
 
 
         Mockito.verify(aircraftService).getAircraftById(any(Long.class));
@@ -114,7 +112,7 @@ class AircraftControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(3))
-                .andExpect(jsonPath("$.pilot").value("UPDATED pete"))
+                .andExpect(jsonPath("$.pilot.firstName").value("UPDATEDPete"))
                 .andExpect(jsonPath("$.airframe").value("F-16"));
 
 
