@@ -6,6 +6,12 @@ spring:
     url: jdbc:postgresql://localhost:5429/aviation_db
     username: user
     password: root
+    driver-class-name: org.postgresql.Driver
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
 
   jpa:
     hibernate:
