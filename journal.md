@@ -19,10 +19,10 @@ During testing, I found that I had to create a pilot on the database first befor
 create an airframe with that pilot id. Based on a tip from Curt, found out that you can add the 
 cascade parameter to the annotation so that JPA/hibernate will automatically create a new pilot 
 too from one request. By using `CascadeType.PERSIST`, it limits cascading exclusively to create 
-operations to avoid unwanted deletes (deleting an aircraft shouldn't delete all of the pilots 
+operations to avoid unwanted deletes (deleting an aircraft shouldn't delete all the pilots 
 who fly it)
 
-# TDD Flight Hour Ranking w/ Posgres Views and Java Records
+# TDD Flight Hour Ranking w/ Postgres Views and Java Records
 
 Extended the aviation app further for a basic user story: "As a pilot, I want to be able to see 
 how I rank against my peers in total flight hours."
@@ -30,7 +30,7 @@ how I rank against my peers in total flight hours."
 Updated the Pilot model with a new `flightHours` field, wrote a migration to add the column to 
 the table, and edited the tests for the new shape.
 
-Wrote another migration that added a `view` to the postgres database. The view leverages the 
+Wrote another Flyway migration that added a `view` to the postgres database. The view leverages the 
 `Rank()` window function to order the pilots by flight hours. 
 
 Instead of creating a JPA Entity to model the results from the view, implemented a 
