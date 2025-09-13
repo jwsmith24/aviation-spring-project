@@ -1,5 +1,6 @@
 package mil.army.swf.aviationappspring.pilot;
 
+import mil.army.swf.aviationappspring.pilot.views.FlightHourRanking;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,6 @@ public class PilotController {
 
     }
 
-
     @GetMapping
     public ResponseEntity<List<Pilot>> getPilots() {
         return ResponseEntity.ok(pilotService.findAllPilots());
@@ -34,15 +34,21 @@ public class PilotController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getPilotById(@PathVariable Long id) {
-
         try {
             Pilot target = pilotService.findPilotById(id);
             return ResponseEntity.ok(target);
 
-        } catch(NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
 
+    }
+
+    @GetMapping("/rankings")
+    public ResponseEntity<List<FlightHourRanking>> getFlightHourRanking() {
+        List<FlightHourRanking> leaderboard = pilotService.getFlightHourRankings();
+
+        return ResponseEntity.ok(leaderboard);
 
     }
 

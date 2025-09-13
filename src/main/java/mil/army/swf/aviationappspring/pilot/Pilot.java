@@ -22,4 +22,5 @@ public class Pilot {
     private String firstName;
     private String lastName;
     private Integer age;
+    private Double flightHours;
 }

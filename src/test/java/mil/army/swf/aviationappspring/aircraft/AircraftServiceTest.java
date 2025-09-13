@@ -30,9 +30,12 @@ class AircraftServiceTest {
 
     @BeforeAll
     static void setup() {
-        mockedAircraftList.add(new Aircraft(1L, "DOUGCraft", new Pilot(2L, "Doug", "Last", 45)));
-        mockedAircraftList.add(new Aircraft(2L, "PETECraft", new Pilot(1L, "Pete", "Last", 29)));
-        mockedAircraftList.add(new Aircraft(3L, "BOBCraft", new Pilot(3L, "Steve", "lastname", 30)));
+        mockedAircraftList.add(new Aircraft(1L, "DOUGCraft", new Pilot(2L, "Doug", "Last", 45,
+                100d)));
+        mockedAircraftList.add(new Aircraft(2L, "PETECraft", new Pilot(1L, "Pete", "Last", 29,
+                304.9)));
+        mockedAircraftList.add(new Aircraft(3L, "BOBCraft", new Pilot(3L, "Steve", "lastname", 30
+                , 562.4)));
 
     }
 

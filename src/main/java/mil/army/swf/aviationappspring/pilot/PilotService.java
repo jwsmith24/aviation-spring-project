@@ -1,5 +1,6 @@
 package mil.army.swf.aviationappspring.pilot;
 
+import mil.army.swf.aviationappspring.pilot.views.FlightHourRanking;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,5 +29,9 @@ public class PilotService {
 
         return pilotRepository.findById(id).orElseThrow();
 
+    }
+
+    public List<FlightHourRanking> getFlightHourRankings() {
+        return pilotRepository.getFlightHourRanking();
     }
 }

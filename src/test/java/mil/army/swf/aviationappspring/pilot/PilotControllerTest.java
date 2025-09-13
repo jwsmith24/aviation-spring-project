@@ -1,7 +1,7 @@
 package mil.army.swf.aviationappspring.pilot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import mil.army.swf.aviationappspring.aircraft.AircraftService;
+import mil.army.swf.aviationappspring.pilot.views.FlightHourRanking;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -26,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PilotControllerTest {
 
     private static List<Pilot> mockPilotList;
+    private static List<FlightHourRanking> mockLeaderboard;
 
     @Autowired
     private MockMvc mockMvc;
@@ -40,10 +40,15 @@ class PilotControllerTest {
     @BeforeAll
     static void setup() {
         mockPilotList = new ArrayList<>();
+        mockLeaderboard = new ArrayList<>();
 
-        mockPilotList.add(new Pilot(1L, "Pete", "Last", 29));
-        mockPilotList.add(new Pilot(2L, "Doug", "Last", 45));
-        mockPilotList.add(new Pilot(3L, "Steve", "lastname", 30));
+        mockPilotList.add(new Pilot(1L, "Pete", "Last", 29, 100d));
+        mockPilotList.add(new Pilot(2L, "Doug", "Last", 45, 304.9));
+        mockPilotList.add(new Pilot(3L, "Steve", "lastname", 30, 562.4));
+
+        mockLeaderboard.add(new FlightHourRanking(3L, "Steve", "lastname", 562.4, 1L));
+        mockLeaderboard.add(new FlightHourRanking(2L, "Doug", "Last", 304.9, 2L));
+        mockLeaderboard.add(new FlightHourRanking(1L, "Pete", "Last", 100d, 3L));
     }
 
     @Test
@@ -99,6 +104,17 @@ class PilotControllerTest {
 
         verify(pilotService).findPilotById(eq(999L));
 
+    }
+
+    @Test
+    void shouldGetFlightHourRanking() throws Exception {
+        when(pilotService.getFlightHourRankings())
+                .thenReturn(mockLeaderboard);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/pilot/rankings"))
+                .andExpect(status().isOk());
+
+        verify(pilotService).getFlightHourRankings();
     }
 
 }

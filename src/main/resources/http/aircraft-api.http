@@ -40,3 +40,7 @@ GET localhost:8080/api/aircraft
 ###
 
 GET http://localhost:8080/api/aircraft?pilotId=1
+
+### testing view
+
+GET http://localhost:8080/api/pilot/rankings

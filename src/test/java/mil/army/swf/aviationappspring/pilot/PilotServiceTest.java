@@ -1,5 +1,6 @@
 package mil.army.swf.aviationappspring.pilot;
 
+import mil.army.swf.aviationappspring.pilot.views.FlightHourRanking;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,13 +15,14 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PilotServiceTest {
 
     private static List<Pilot> mockPilotList;
+
+    private static List<FlightHourRanking> mockLeaderboard;
 
     @Mock
     PilotRepository pilotRepository;
@@ -31,11 +33,32 @@ class PilotServiceTest {
     @BeforeAll
     static void setup() {
         mockPilotList = new ArrayList<>();
+        mockLeaderboard = new ArrayList<>();
 
-        mockPilotList.add(new Pilot(1L, "Pete", "Last", 29));
-        mockPilotList.add(new Pilot(2L, "Doug", "Last", 45));
-        mockPilotList.add(new Pilot(3L, "Steve", "lastname", 30));
+        mockPilotList.add(new Pilot(1L, "Pete", "Last", 29, 100d));
+        mockPilotList.add(new Pilot(2L, "Doug", "Last", 45, 304.9));
+        mockPilotList.add(new Pilot(3L, "Steve", "lastname", 30, 562.4));
+
+        mockLeaderboard.add(new FlightHourRanking(3L, "Steve", "lastname", 562.4, 1L));
+        mockLeaderboard.add(new FlightHourRanking(2L, "Doug", "Last", 304.9, 2L));
+        mockLeaderboard.add(new FlightHourRanking(1L, "Pete", "Last", 100d, 3L));
     }
+
+    @Test
+    void shouldGetFlightHourRanking() {
+        when(pilotRepository.getFlightHourRanking())
+                .thenReturn(mockLeaderboard);
+
+        List<FlightHourRanking> leaderboard = pilotService.getFlightHourRankings();
+
+        assertEquals(3, leaderboard.size());
+        assertEquals(1L, leaderboard.getFirst().rank());
+
+        verify(pilotRepository).getFlightHourRanking();
+
+    }
+
+
 
     @Test
     void shouldSavePilot() {
