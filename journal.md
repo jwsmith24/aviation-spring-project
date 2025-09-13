@@ -5,8 +5,8 @@ Wrote tests for the service and controller layer based on the requirements provi
 CRUD functionality was running, improved pilot controller methods such as `getPilotById` to 
 explicitly handle exceptions in order to return better error messages. 
 
-Updated the Aircraft model to reference a pilot rather than store a string and a Flyway 
-migration was generated to update the table. 
+Updated the Aircraft model to reference a pilot rather than store a string and wrote a Flyway 
+migration to update the table columns. 
 
 TDD helped ensure the Aircraft-related classes were updated properly. Added a findAllByPilot custom
 query that leverages JPA's SQL inference to return all the aircraft that a given pilot has flown.
