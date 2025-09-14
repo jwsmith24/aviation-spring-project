@@ -32,13 +32,7 @@ public class AircraftController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Aircraft> getAircraftById(@PathVariable Long id) {
-
-        // todo: fix this to explicitly handle exception (add custom error dto??)
         Aircraft targetAircraft = service.getAircraftById(id);
-        if (targetAircraft == null) {
-            return ResponseEntity.notFound().build();
-        }
-
         return ResponseEntity.ok(targetAircraft);
     }
 

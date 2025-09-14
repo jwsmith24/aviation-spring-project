@@ -1,6 +1,8 @@
 package mil.army.swf.aviationappspring.aircraft;
 
 import mil.army.swf.aviationappspring.aircraft.views.AircraftPopularity;
+import mil.army.swf.aviationappspring.util.http.exceptions.BadRequestException;
+import mil.army.swf.aviationappspring.util.http.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,11 @@ public class AircraftService {
     }
 
     public Aircraft createAircraft(Aircraft aircraft) {
+
+        if (aircraft.getAirframe() == null || aircraft.getAirframe().isBlank()) {
+            throw new BadRequestException("Airframe must be present");
+        }
+
        return  repository.save(aircraft);
     }
 
@@ -24,7 +31,9 @@ public class AircraftService {
 
     public Aircraft getAircraftById(Long id) {
 
-       return repository.findById(id).orElseThrow();
+       return repository.findById(id)
+               .orElseThrow(() -> new ResourceNotFoundException("Aircraft with id: " + id + " not" +
+                       " found"));
 
     }
 
