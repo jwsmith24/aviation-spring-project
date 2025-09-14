@@ -1,10 +1,9 @@
 package mil.army.swf.aviationappspring.aircraft;
 
-import mil.army.swf.aviationappspring.pilot.views.AircraftPopularity;
+import mil.army.swf.aviationappspring.aircraft.views.AircraftPopularity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AircraftService {

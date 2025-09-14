@@ -1,13 +1,11 @@
 package mil.army.swf.aviationappspring.aircraft;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import mil.army.swf.aviationappspring.pilot.Pilot;
-import mil.army.swf.aviationappspring.pilot.views.AircraftPopularity;
+import mil.army.swf.aviationappspring.aircraft.views.AircraftPopularity;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

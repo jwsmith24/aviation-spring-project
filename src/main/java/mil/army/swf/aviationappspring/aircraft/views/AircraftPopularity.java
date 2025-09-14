@@ -1,4 +1,4 @@
-package mil.army.swf.aviationappspring.pilot.views;
+package mil.army.swf.aviationappspring.aircraft.views;
 
 public record AircraftPopularity(
         String airframe,

@@ -45,7 +45,7 @@ controller and service methods were also added (writing tests first).
 Built everything on a new feature branch and merged back to main once complete. Committed and 
 pushed changes as soon as tests passed.
 
-# Additional View Implementation
+# Views and Records Part 2 + Dynamic Query Parameters
 Reinforced new Spring wisdom by extending the aviation application for another user story: "As a 
 pilot, I want to be able to see which airframes are the most popular among my peers."
 

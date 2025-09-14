@@ -1,6 +1,6 @@
 package mil.army.swf.aviationappspring.aircraft;
 
-import mil.army.swf.aviationappspring.pilot.views.AircraftPopularity;
+import mil.army.swf.aviationappspring.aircraft.views.AircraftPopularity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

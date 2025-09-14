@@ -1,7 +1,7 @@
 package mil.army.swf.aviationappspring.aircraft;
 
 import mil.army.swf.aviationappspring.pilot.Pilot;
-import mil.army.swf.aviationappspring.pilot.views.AircraftPopularity;
+import mil.army.swf.aviationappspring.aircraft.views.AircraftPopularity;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
