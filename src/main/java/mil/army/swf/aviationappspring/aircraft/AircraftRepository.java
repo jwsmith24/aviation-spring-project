@@ -16,7 +16,7 @@ public interface AircraftRepository extends JpaRepository<Aircraft, Long> {
 
     @Query(value = "SELECT * FROM aircraft_popularity ORDER BY total_pilots DESC LIMIT :limit",
             nativeQuery =
-            true)
+                    true)
     List<AircraftPopularity> getAircraftPopularity(@Param("limit") Long limit);
 
 }

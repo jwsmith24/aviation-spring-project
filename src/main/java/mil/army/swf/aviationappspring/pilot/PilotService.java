@@ -1,6 +1,7 @@
 package mil.army.swf.aviationappspring.pilot;
 
 import mil.army.swf.aviationappspring.pilot.views.FlightHourRanking;
+import mil.army.swf.aviationappspring.util.http.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +28,8 @@ public class PilotService {
 
     public Pilot findPilotById(Long id) {
 
-        return pilotRepository.findById(id).orElseThrow();
+        return pilotRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
+                "Pilot with id: " + id + " not found"));
 
     }
 

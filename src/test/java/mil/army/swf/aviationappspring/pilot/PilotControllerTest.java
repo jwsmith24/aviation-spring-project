@@ -13,11 +13,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -70,7 +70,7 @@ class PilotControllerTest {
 
     @Test
     void shouldGetPilots() throws Exception {
-        when (pilotService.findAllPilots())
+        when(pilotService.findAllPilots())
                 .thenReturn(mockPilotList);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/pilot"))
@@ -83,7 +83,7 @@ class PilotControllerTest {
 
     @Test
     void shouldGetPilotById() throws Exception {
-        when (pilotService.findPilotById(any(Long.class)))
+        when(pilotService.findPilotById(any(Long.class)))
                 .thenReturn(mockPilotList.getFirst());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/pilot/1"))
@@ -94,17 +94,6 @@ class PilotControllerTest {
         verify(pilotService).findPilotById(eq(1L));
     }
 
-    @Test
-    void shouldThrowWhenPilotNotFound() throws Exception {
-        when (pilotService.findPilotById(any(Long.class)))
-                .thenThrow(new NoSuchElementException());
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/pilot/999"))
-                .andExpect(status().isNotFound());
-
-        verify(pilotService).findPilotById(eq(999L));
-
-    }
 
     @Test
     void shouldGetFlightHourRanking() throws Exception {

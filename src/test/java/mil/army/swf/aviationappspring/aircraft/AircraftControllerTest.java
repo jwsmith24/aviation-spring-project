@@ -1,8 +1,8 @@
 package mil.army.swf.aviationappspring.aircraft;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import mil.army.swf.aviationappspring.pilot.Pilot;
 import mil.army.swf.aviationappspring.aircraft.views.AircraftPopularity;
+import mil.army.swf.aviationappspring.pilot.Pilot;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -82,10 +81,10 @@ class AircraftControllerTest {
     void shouldCreateAircraft() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/api/aircraft")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(mockAircraft))
-        ).andExpect(status().isCreated())
+                        .post("/api/aircraft")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(mockAircraft))
+                ).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.airframe").value("F-16"))
                 .andExpect(jsonPath("$.pilot.firstName").value("Pete"));
 
@@ -97,7 +96,7 @@ class AircraftControllerTest {
     void shouldGetAircraftById() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders
-                .get("/api/aircraft/1"))
+                        .get("/api/aircraft/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.airframe").value("F-22"))
@@ -172,9 +171,6 @@ class AircraftControllerTest {
 
         verify(aircraftService).getPopularAircraft(1L);
     }
-
-
-
 
 
 }

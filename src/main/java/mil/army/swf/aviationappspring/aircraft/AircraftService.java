@@ -22,7 +22,7 @@ public class AircraftService {
             throw new BadRequestException("Airframe must be present");
         }
 
-       return  repository.save(aircraft);
+        return repository.save(aircraft);
     }
 
     public List<Aircraft> getAllAircraft() {
@@ -31,9 +31,9 @@ public class AircraftService {
 
     public Aircraft getAircraftById(Long id) {
 
-       return repository.findById(id)
-               .orElseThrow(() -> new ResourceNotFoundException("Aircraft with id: " + id + " not" +
-                       " found"));
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Aircraft with id: " + id + " not" +
+                        " found"));
 
     }
 
@@ -55,7 +55,9 @@ public class AircraftService {
 
     public void deleteAircraft(Long id) {
 
-        Aircraft target = repository.findById(id).orElseThrow();
+        Aircraft target =
+                repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Aircraft" +
+                        " with id: " + id + " not found"));
         repository.delete(target);
     }
 

@@ -1,6 +1,7 @@
 package mil.army.swf.aviationappspring.pilot;
 
 import mil.army.swf.aviationappspring.pilot.views.FlightHourRanking;
+import mil.army.swf.aviationappspring.util.http.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,12 +11,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class PilotServiceTest {
@@ -57,7 +59,6 @@ class PilotServiceTest {
         verify(pilotRepository).getFlightHourRanking();
 
     }
-
 
 
     @Test
@@ -106,7 +107,7 @@ class PilotServiceTest {
         when(pilotRepository.findById(any(Long.class)))
                 .thenReturn(Optional.empty());
 
-        assertThrows(NoSuchElementException.class, () -> {
+        assertThrows(ResourceNotFoundException.class, () -> {
             pilotService.findPilotById(99L);
         });
 

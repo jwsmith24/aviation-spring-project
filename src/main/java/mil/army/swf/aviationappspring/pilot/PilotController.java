@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/pilot")
@@ -34,13 +33,9 @@ public class PilotController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getPilotById(@PathVariable Long id) {
-        try {
-            Pilot target = pilotService.findPilotById(id);
-            return ResponseEntity.ok(target);
 
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
-        }
+        Pilot target = pilotService.findPilotById(id);
+        return ResponseEntity.ok(target);
 
     }
 

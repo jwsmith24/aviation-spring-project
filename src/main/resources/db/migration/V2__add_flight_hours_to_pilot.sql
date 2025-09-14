@@ -1,2 +1,2 @@
 ALTER TABLE pilot
-ADD flight_hours DOUBLE PRECISION;
+    ADD flight_hours DOUBLE PRECISION;

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface PilotRepository extends JpaRepository <Pilot, Long> {
+public interface PilotRepository extends JpaRepository<Pilot, Long> {
 
     @Query(value =
             "SELECT id, first_name as firstName, last_name AS lastName, " +

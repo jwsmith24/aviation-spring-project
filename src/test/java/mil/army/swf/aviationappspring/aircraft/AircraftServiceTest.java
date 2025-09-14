@@ -1,7 +1,9 @@
 package mil.army.swf.aviationappspring.aircraft;
 
-import mil.army.swf.aviationappspring.pilot.Pilot;
 import mil.army.swf.aviationappspring.aircraft.views.AircraftPopularity;
+import mil.army.swf.aviationappspring.pilot.Pilot;
+import mil.army.swf.aviationappspring.util.http.exceptions.BadRequestException;
+import mil.army.swf.aviationappspring.util.http.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,24 +14,22 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AircraftServiceTest {
 
-    @Mock AircraftRepository aircraftRepository;
-
-    @InjectMocks AircraftService aircraftService;
-
-
     private static final List<Aircraft> mockedAircraftList = new ArrayList<>();
-
     private static final List<AircraftPopularity> mockAircraftPopularity = new ArrayList<>();
+    @Mock
+    AircraftRepository aircraftRepository;
+    @InjectMocks
+    AircraftService aircraftService;
 
     @BeforeAll
     static void setup() {
@@ -61,6 +61,17 @@ class AircraftServiceTest {
     }
 
     @Test
+    void shouldThrowWhenMissingAirframe() {
+
+        assertThrows(BadRequestException.class, () -> {
+            aircraftService.createAircraft(new Aircraft(999L, "",
+                    new Pilot(3L, "Steve", "lastname", 30, 562.4)));
+        });
+
+        verify(aircraftRepository, never()).save(any(Aircraft.class));
+    }
+
+    @Test
     void shouldGetAllAircraft() {
         when(aircraftRepository.findAll())
                 .thenReturn(mockedAircraftList);
@@ -88,7 +99,7 @@ class AircraftServiceTest {
     @Test
     void shouldGetAllAircraftPilotFlies() {
         when(aircraftRepository.findAllByPilot_Id(eq(1L)))
-                .thenReturn(mockedAircraftList.stream().filter(aircraft -> aircraft.getPilot().getId() == 1L ).toList());
+                .thenReturn(mockedAircraftList.stream().filter(aircraft -> aircraft.getPilot().getId() == 1L).toList());
 
         List<Aircraft> aircraftList = aircraftService.getAircraftByPilotId(1L);
 
@@ -119,7 +130,7 @@ class AircraftServiceTest {
 
         when(aircraftRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(NoSuchElementException.class, () -> aircraftService.deleteAircraft(id));
+        assertThrows(ResourceNotFoundException.class, () -> aircraftService.deleteAircraft(id));
 
         verify(aircraftRepository).findById(id);
         // ensure delete is never called on the repo if an entity isn't found
@@ -148,9 +159,6 @@ class AircraftServiceTest {
         verify(aircraftRepository).getAircraftPopularity(1L);
 
     }
-
-
-
 
 
 }
