@@ -1,5 +1,6 @@
 package mil.army.swf.aviationappspring.aircraft;
 
+import mil.army.swf.aviationappspring.pilot.views.AircraftPopularity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,5 +49,13 @@ public class AircraftService {
 
         Aircraft target = repository.findById(id).orElseThrow();
         repository.delete(target);
+    }
+
+    public List<AircraftPopularity> getPopularAircraft() {
+        return repository.getAircraftPopularity();
+    }
+
+    public List<AircraftPopularity> getPopularAircraft(Long limit) {
+        return repository.getAircraftPopularity(limit);
     }
 }

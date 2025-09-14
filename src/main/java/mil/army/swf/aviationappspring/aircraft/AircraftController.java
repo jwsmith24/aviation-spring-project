@@ -1,5 +1,6 @@
 package mil.army.swf.aviationappspring.aircraft;
 
+import mil.army.swf.aviationappspring.pilot.views.AircraftPopularity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,6 +58,16 @@ public class AircraftController {
         service.deleteAircraft(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/popular")
+    public ResponseEntity<List<AircraftPopularity>> getPopularAircraft() {
+        return ResponseEntity.ok(service.getPopularAircraft());
+    }
+
+    @GetMapping(value = "/popular", params = "limit")
+    public ResponseEntity<List<AircraftPopularity>> getLimitedPopularityList(@RequestParam("limit") Long limit) {
+        return ResponseEntity.ok(service.getPopularAircraft(limit));
     }
 
 }

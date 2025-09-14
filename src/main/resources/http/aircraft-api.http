@@ -41,6 +41,13 @@ GET localhost:8080/api/aircraft
 
 GET http://localhost:8080/api/aircraft?pilotId=1
 
-### testing view
+### flight hour ranking view
 
 GET http://localhost:8080/api/pilot/rankings
+
+### aircraft popularity view
+
+GET http://localhost:8080/api/aircraft/popular
+
+### limit to top 2 popular aircraft
+GET http://localhost:8080/api/aircraft/popular?limit=2

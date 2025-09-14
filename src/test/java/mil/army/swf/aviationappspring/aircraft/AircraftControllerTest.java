@@ -1,7 +1,9 @@
 package mil.army.swf.aviationappspring.aircraft;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import mil.army.swf.aviationappspring.pilot.Pilot;
+import mil.army.swf.aviationappspring.pilot.views.AircraftPopularity;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +21,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,6 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AircraftControllerTest {
 
     private static final List<Aircraft> mockedAircraftList = new ArrayList<>();
+    private static final List<AircraftPopularity> mockAircraftPopularity = new ArrayList<>();
+
     private static Aircraft mockAircraft;
     private static Aircraft updatedMockAircraft;
 
@@ -47,6 +52,11 @@ class AircraftControllerTest {
                 562.4)));
         updatedMockAircraft = new Aircraft(mockAircraft.getId(), mockAircraft.getAirframe(),
                 new Pilot(1L, "UPDATEDPete", "Last", 29, 100d));
+
+        mockAircraftPopularity.add(new AircraftPopularity("UH-60", 4L));
+        mockAircraftPopularity.add(new AircraftPopularity("CH-47", 2L));
+        mockAircraftPopularity.add(new AircraftPopularity("AH-64", 29L));
+
     }
 
     @BeforeEach
@@ -63,6 +73,11 @@ class AircraftControllerTest {
 
         when(aircraftService.updateAircraft(any(Long.class), any(Aircraft.class)))
                 .thenReturn(updatedMockAircraft);
+
+        when(aircraftService.getPopularAircraft()).thenReturn(mockAircraftPopularity);
+        when(aircraftService.getPopularAircraft(1L)).thenReturn(mockAircraftPopularity
+                .stream()
+                .filter(mock -> mock.airframe().equals("UH-60")).toList());
     }
 
     @Test
@@ -135,6 +150,29 @@ class AircraftControllerTest {
 
         Mockito.verify(aircraftService).getAircraftById(any(Long.class));
 
+    }
+
+    @Test
+    void shouldGetPopularAircraftList() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/aircraft/popular"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(3))
+                .andExpect(jsonPath("$[0].totalPilots").value(4));
+
+        verify(aircraftService).getPopularAircraft();
+    }
+
+    @Test
+    void shouldGetLimitedPopularAircraftList() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/aircraft/popular?limit=1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].totalPilots").value(4));
+
+        verify(aircraftService).getPopularAircraft(1L);
     }
 
 

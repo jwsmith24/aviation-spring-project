@@ -1,6 +1,7 @@
 package mil.army.swf.aviationappspring.aircraft;
 
 import mil.army.swf.aviationappspring.pilot.Pilot;
+import mil.army.swf.aviationappspring.pilot.views.AircraftPopularity;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,6 +29,8 @@ class AircraftServiceTest {
 
     private static final List<Aircraft> mockedAircraftList = new ArrayList<>();
 
+    private static final List<AircraftPopularity> mockAircraftPopularity = new ArrayList<>();
+
     @BeforeAll
     static void setup() {
         mockedAircraftList.add(new Aircraft(1L, "DOUGCraft", new Pilot(2L, "Doug", "Last", 45,
@@ -36,6 +39,10 @@ class AircraftServiceTest {
                 304.9)));
         mockedAircraftList.add(new Aircraft(3L, "BOBCraft", new Pilot(3L, "Steve", "lastname", 30
                 , 562.4)));
+
+        mockAircraftPopularity.add(new AircraftPopularity("UH-60", 4L));
+        mockAircraftPopularity.add(new AircraftPopularity("CH-47", 2L));
+        mockAircraftPopularity.add(new AircraftPopularity("AH-64", 29L));
 
     }
 
@@ -118,6 +125,31 @@ class AircraftServiceTest {
         // ensure delete is never called on the repo if an entity isn't found
         verify(aircraftRepository, never()).deleteById(any());
     }
+
+    @Test
+    void shouldGetAircraftPopularityDto() {
+        when(aircraftRepository.getAircraftPopularity()).thenReturn(mockAircraftPopularity);
+
+        List<AircraftPopularity> popularAircraft = aircraftService.getPopularAircraft();
+        assertEquals(3, popularAircraft.size());
+
+        verify(aircraftRepository).getAircraftPopularity();
+    }
+
+    @Test
+    void shouldGetLimitedPopularityDto() {
+        when(aircraftRepository.getAircraftPopularity(1L)).thenReturn(mockAircraftPopularity
+                .stream()
+                .filter(mock -> mock.airframe().equals("UH-60")).toList());
+
+        List<AircraftPopularity> popularAircraft = aircraftService.getPopularAircraft(1L);
+        assertEquals(1, popularAircraft.size());
+
+        verify(aircraftRepository).getAircraftPopularity(1L);
+
+    }
+
+
 
 
 
