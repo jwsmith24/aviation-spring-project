@@ -50,3 +50,11 @@ GET http://localhost:8080/api/aircraft/popular
 
 ### limit to top 2 popular aircraft
 GET http://localhost:8080/api/aircraft/popular?limit=2
+
+###
+PATCH http://localhost:8080/api/pilot/1/hours
+Content-Type: application/json
+
+{
+
+}

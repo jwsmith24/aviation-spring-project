@@ -15,10 +15,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -119,6 +119,21 @@ class PilotControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(new UpdateFlightHoursRequest(6.4)))
         ).andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldReturnErrorMessageForInvalidRequest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.patch("/api/pilot/1" +
+                        "/hours")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(new UpdateFlightHoursRequest(null))))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errorCode").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.message").value("Validation failed for incoming request"))
+                .andExpect(jsonPath("$.errors.flightHours").value("must not be null"));
+
+        verify(pilotService, never()).updateFlightHours(any(Long.class), any(Double.class));
+
     }
 
 

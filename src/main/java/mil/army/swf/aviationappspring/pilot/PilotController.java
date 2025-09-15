@@ -1,5 +1,6 @@
 package mil.army.swf.aviationappspring.pilot;
 
+import jakarta.validation.Valid;
 import mil.army.swf.aviationappspring.pilot.dto.FlightHourRanking;
 import mil.army.swf.aviationappspring.pilot.dto.UpdateFlightHoursRequest;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +51,7 @@ public class PilotController {
 
     @PatchMapping("/{id}/hours")
     public ResponseEntity<Pilot> updateFlightHours(@PathVariable("id") Long pilotId,
-                                                   @RequestBody UpdateFlightHoursRequest request) {
+                                                   @Valid @RequestBody UpdateFlightHoursRequest request) {
         Pilot updated = pilotService.updateFlightHours(pilotId, request.flightHours());
         return ResponseEntity.ok(updated);
     }
