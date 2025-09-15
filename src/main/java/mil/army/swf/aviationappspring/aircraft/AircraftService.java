@@ -1,6 +1,6 @@
 package mil.army.swf.aviationappspring.aircraft;
 
-import mil.army.swf.aviationappspring.aircraft.views.AircraftPopularity;
+import mil.army.swf.aviationappspring.aircraft.dto.AircraftPopularity;
 import mil.army.swf.aviationappspring.util.http.exceptions.BadRequestException;
 import mil.army.swf.aviationappspring.util.http.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;

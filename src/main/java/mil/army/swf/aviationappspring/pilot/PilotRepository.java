@@ -1,6 +1,6 @@
 package mil.army.swf.aviationappspring.pilot;
 
-import mil.army.swf.aviationappspring.pilot.views.FlightHourRanking;
+import mil.army.swf.aviationappspring.pilot.dto.FlightHourRanking;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

@@ -1,7 +1,8 @@
 package mil.army.swf.aviationappspring.pilot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import mil.army.swf.aviationappspring.pilot.views.FlightHourRanking;
+import mil.army.swf.aviationappspring.pilot.dto.FlightHourRanking;
+import mil.army.swf.aviationappspring.pilot.dto.UpdateFlightHoursRequest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,5 +106,21 @@ class PilotControllerTest {
 
         verify(pilotService).getFlightHourRankings();
     }
+
+    @Test
+    void shouldUpdatePilotFlightHours() throws Exception {
+        Pilot updatedPilot = mockPilotList.getFirst();
+        updatedPilot.setFlightHours(updatedPilot.getFlightHours() + 6.4);
+
+        when(pilotService.updateFlightHours(any(Long.class), any(Double.class)))
+                .thenReturn(updatedPilot);
+
+        mockMvc.perform(MockMvcRequestBuilders.patch("/api/pilot/1/hours")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(new UpdateFlightHoursRequest(6.4)))
+        ).andExpect(status().isOk());
+    }
+
+
 
 }

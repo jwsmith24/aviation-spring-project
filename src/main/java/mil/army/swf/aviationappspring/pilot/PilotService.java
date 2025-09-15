@@ -1,6 +1,7 @@
 package mil.army.swf.aviationappspring.pilot;
 
-import mil.army.swf.aviationappspring.pilot.views.FlightHourRanking;
+import mil.army.swf.aviationappspring.pilot.dto.FlightHourRanking;
+import mil.army.swf.aviationappspring.util.http.exceptions.BadRequestException;
 import mil.army.swf.aviationappspring.util.http.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -36,4 +37,21 @@ public class PilotService {
     public List<FlightHourRanking> getFlightHourRankings() {
         return pilotRepository.getFlightHourRanking();
     }
+
+    public Pilot updateFlightHours(Long pilotId, Double flightHours) {
+        if (flightHours == null) {
+            throw new BadRequestException("No flight hours were provided to update pilot with id:" +
+                    " " + pilotId);
+        }
+
+        Pilot pilot =
+                pilotRepository.findById(pilotId)
+                        .orElseThrow(() -> new ResourceNotFoundException("Pilot with ID: " + pilotId + "not found.."));
+
+        pilot.setFlightHours(pilot.getFlightHours() + flightHours);
+
+        return pilotRepository.save(pilot);
+    }
+
+
 }

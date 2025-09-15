@@ -1,7 +1,7 @@
 package mil.army.swf.aviationappspring.aircraft;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import mil.army.swf.aviationappspring.aircraft.views.AircraftPopularity;
+import mil.army.swf.aviationappspring.aircraft.dto.AircraftPopularity;
 import mil.army.swf.aviationappspring.pilot.Pilot;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;

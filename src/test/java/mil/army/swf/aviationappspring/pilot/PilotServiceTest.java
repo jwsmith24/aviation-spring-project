@@ -1,6 +1,7 @@
 package mil.army.swf.aviationappspring.pilot;
 
-import mil.army.swf.aviationappspring.pilot.views.FlightHourRanking;
+import mil.army.swf.aviationappspring.pilot.dto.FlightHourRanking;
+import mil.army.swf.aviationappspring.util.http.exceptions.BadRequestException;
 import mil.army.swf.aviationappspring.util.http.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,8 +17,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PilotServiceTest {
@@ -112,6 +112,33 @@ class PilotServiceTest {
         });
 
         verify(pilotRepository).findById(any(Long.class));
+    }
+
+    @Test
+    void shouldUpdateFlightHours() {
+        when(pilotRepository.findById(any(Long.class)))
+                .thenReturn(Optional.of(mockPilotList.getFirst()));
+
+        // return whatever is saved to make sure service is applying update
+        when(pilotRepository.save(any(Pilot.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        Pilot updated = pilotService.updateFlightHours(1L, 6.4);
+
+        assertEquals(106.4, updated.getFlightHours());
+
+        verify(pilotRepository).findById(any(Long.class));
+        verify(pilotRepository).save(any(Pilot.class));
+
+    }
+
+    @Test
+    void shouldThrowWhenFlightHoursNotProvided() throws Exception {
+
+        assertThrows(BadRequestException.class, () -> pilotService.updateFlightHours(1L, null));
+
+        verify(pilotRepository, never()).findById(any(Long.class));
+        verify(pilotRepository, never()).save(any(Pilot.class));
     }
 
 }
