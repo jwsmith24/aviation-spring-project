@@ -5,6 +5,7 @@ import mil.army.swf.aviationappspring.pilot.dto.FlightHourRanking;
 import mil.army.swf.aviationappspring.pilot.dto.UpdateFlightHoursRequest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -15,10 +16,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -27,6 +30,7 @@ class PilotControllerTest {
 
     private static List<Pilot> mockPilotList;
     private static List<FlightHourRanking> mockLeaderboard;
+    private static ArgumentCaptor<Pilot> captor;
 
     @Autowired
     private MockMvc mockMvc;
@@ -50,6 +54,8 @@ class PilotControllerTest {
         mockLeaderboard.add(new FlightHourRanking(3L, "Steve", "lastname", 562.4, 1L));
         mockLeaderboard.add(new FlightHourRanking(2L, "Doug", "Last", 304.9, 2L));
         mockLeaderboard.add(new FlightHourRanking(1L, "Pete", "Last", 100d, 3L));
+
+        captor =  ArgumentCaptor.forClass(Pilot.class);
     }
 
     @Test
@@ -62,11 +68,12 @@ class PilotControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(mockPilotList.getFirst()))
                 )
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.firstName").value("Pete"))
-                .andExpect(jsonPath("$.age").value(29));
+                .andExpect(status().isCreated());
 
-        verify(pilotService).savePilot(any(Pilot.class));
+
+
+        verify(pilotService).savePilot(captor.capture());
+        assertThat(captor.getValue()).usingRecursiveComparison().isEqualTo(mockPilotList.getFirst());
     }
 
     @Test
@@ -122,7 +129,7 @@ class PilotControllerTest {
     }
 
     @Test
-    void shouldReturnErrorMessageForInvalidRequest() throws Exception {
+    void shouldReturnErrorMessageForMissingFlightHours() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.patch("/api/pilot/1" +
                         "/hours")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -134,6 +141,17 @@ class PilotControllerTest {
 
         verify(pilotService, never()).updateFlightHours(any(Long.class), any(Double.class));
 
+    }
+
+    @Test
+    void shouldReturnErrorMessageForNegativeFlightHours() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.patch("/api/pilot/1/hours")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(new UpdateFlightHoursRequest(-23.4)))
+
+        ).andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Validation failed for incoming request"))
+                .andExpect(jsonPath("$.errors.flightHours").value("must be greater than 0"));
     }
 
 

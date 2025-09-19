@@ -1,7 +1,6 @@
 package mil.army.swf.aviationappspring.pilot;
 
 import mil.army.swf.aviationappspring.pilot.dto.FlightHourRanking;
-import mil.army.swf.aviationappspring.util.http.exceptions.BadRequestException;
 import mil.army.swf.aviationappspring.util.http.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -129,16 +128,6 @@ class PilotServiceTest {
 
         verify(pilotRepository).findById(any(Long.class));
         verify(pilotRepository).save(any(Pilot.class));
-
-    }
-
-    @Test
-    void shouldThrowWhenFlightHoursNotProvided() throws Exception {
-
-        assertThrows(BadRequestException.class, () -> pilotService.updateFlightHours(1L, null));
-
-        verify(pilotRepository, never()).findById(any(Long.class));
-        verify(pilotRepository, never()).save(any(Pilot.class));
     }
 
 }

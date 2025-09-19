@@ -44,11 +44,19 @@ public class PilotService {
                     " " + pilotId);
         }
 
+        if (flightHours < 0 ) {
+            throw new BadRequestException("Flight hours cannot be negative for pilot with id: " + pilotId);
+        }
+
         Pilot pilot =
                 pilotRepository.findById(pilotId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Pilot with ID: " + pilotId + "not found.."));
+                        .orElseThrow(() -> new ResourceNotFoundException("Pilot with ID: " + pilotId + " not found.."));
 
-        pilot.setFlightHours(pilot.getFlightHours() + flightHours);
+        double existingFlightHours = pilot.getFlightHours() != null ?
+                pilot.getFlightHours()
+                : 0d;
+
+        pilot.setFlightHours(existingFlightHours + flightHours);
 
         return pilotRepository.save(pilot);
     }

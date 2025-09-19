@@ -116,6 +116,7 @@ class AircraftServiceTest {
 
         when(aircraftRepository.findById(id))
                 .thenReturn(Optional.of(mock));
+
         doNothing().when(aircraftRepository).delete(any(Aircraft.class));
 
         aircraftService.deleteAircraft(id);
